@@ -1,6 +1,8 @@
 import os
 from fastapi import FastAPI
 from pydantic import BaseModel
+from app.gemini_chat import gemini_chat
+from app.temp_kb import temp_kb
 
 app = FastAPI()
 
@@ -16,4 +18,11 @@ class ChatMessage(BaseModel):
 
 @app.post("/chat")
 async def chat(reqbody: ChatMessage):
-    return {"message": "Hello this is test. This is your message: " + reqbody.user_message}
+    try:
+        ai_response = await gemini_chat(reqbody.user_message, temp_kb)
+        return {"message": ai_response}
+    except Exception as e:
+        print(e)
+        return {
+            "message": "Sorry, I'm having trouble processing your request. Please try again later."
+        }

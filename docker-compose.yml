@@ -12,4 +12,5 @@ services:
       - .env
     environment:
       - APP_NAME=${APP_NAME}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     command: uvicorn app.main:app --host 0.0.0.0 --port 8888 --reload
