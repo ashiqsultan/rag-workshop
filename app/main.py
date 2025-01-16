@@ -1,17 +1,19 @@
 import os
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+@app.get("/ping")
+async def ping():
+    return {"message": "pong"}
 
-@app.get("/get_app_name")
-async def get_app_name():
-    appname = os.getenv("APP_NAME", "default-fastapi-rag")
-    return {"app_name": appname}
+
+class ChatMessage(BaseModel):
+    user_message: str
+
+
+@app.post("/chat")
+async def chat(reqbody: ChatMessage):
+    return {"message": "Hello this is test. This is your message: " + reqbody.user_message}
