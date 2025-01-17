@@ -8,8 +8,12 @@ from app.notes.create import create
 from app.notes.semantic_search import semantic_search
 from app.temp_kb import temp_kb
 from app.notes.rag_answer import rag_answer
+from app.helpers.sqlite_db import init_db
 
 app = FastAPI()
+
+# Initialize the SQLite database
+init_db()
 
 
 @app.get("/ping", tags=["Health Check"])
