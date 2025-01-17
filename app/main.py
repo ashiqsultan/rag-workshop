@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from app.helpers.gemini_chat import gemini_chat
 from app.helpers.gemini_embedding import gemini_embedding
+from app.helpers.split_text_recursive import split_text_recursive
 from app.temp_kb import temp_kb
 
 app = FastAPI()
@@ -34,3 +35,9 @@ async def get_embedding(reqbody: ChatMessage):
     embedding = await gemini_embedding(reqbody.user_message)
     length = len(embedding)
     return {"message": embedding, "length": length}
+
+
+@app.post("/test-split-text")
+async def test_split_text(reqbody: ChatMessage):
+    result = split_text_recursive(reqbody.user_message)
+    return {"data": result}
