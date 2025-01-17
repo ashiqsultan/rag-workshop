@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI
 from pydantic import BaseModel
-from app.gemini_chat import gemini_chat
+from app.helpers.gemini_chat import gemini_chat
 from app.temp_kb import temp_kb
 
 app = FastAPI()
