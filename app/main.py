@@ -8,6 +8,7 @@ from app.helpers.split_text_recursive import split_text_recursive
 from app.notes.create import create
 from app.notes.semantic_search import semantic_search
 from app.temp_kb import temp_kb
+from app.notes.rag_answer import rag_answer
 
 
 load_dotenv(find_dotenv())
@@ -16,7 +17,7 @@ load_dotenv(find_dotenv())
 app = FastAPI()
 
 
-@app.get("/ping")
+@app.get("/ping", tags=["Health Check"])
 async def ping():
     return {"message": "pong"}
 
@@ -25,7 +26,7 @@ class ChatMessage(BaseModel):
     user_message: str
 
 
-@app.post("/chat")
+@app.post("/chat", tags=["Chat"])
 async def chat(reqbody: ChatMessage):
     try:
         ai_response = await gemini_chat(reqbody.user_message, temp_kb)
@@ -37,14 +38,14 @@ async def chat(reqbody: ChatMessage):
         }
 
 
-@app.post("/get-embedding")
+@app.post("/get-embedding", tags=["Embedding"])
 async def get_embedding(reqbody: ChatMessage):
     embedding = await gemini_embedding(reqbody.user_message)
     length = len(embedding)
     return {"message": embedding, "length": length}
 
 
-@app.post("/test-split-text")
+@app.post("/test-split-text", tags=["Text Split"])
 async def test_split_text(reqbody: ChatMessage):
     result = split_text_recursive(reqbody.user_message)
     return {"data": result}
@@ -69,3 +70,9 @@ class GetSimilarNotes(BaseModel):
 async def get_similar_notes(text: str):
     notes = await semantic_search(text)
     return {"data": notes}
+
+
+@app.get("/rag-chat", tags=["RAG-Chat"])
+async def rag_chat(text: str):
+    answer = await rag_answer(text)
+    return {"data": answer}
