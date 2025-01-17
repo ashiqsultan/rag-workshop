@@ -9,7 +9,7 @@ from app.notes.create import create
 from app.notes.semantic_search import semantic_search
 from app.temp_kb import temp_kb
 from app.notes.rag_answer import rag_answer
-from app.helpers.sqlite_db import init_db
+from app.helpers.sqlite_db import init_db, get_all_notes as get_all
 
 
 load_dotenv(find_dotenv())
@@ -64,6 +64,12 @@ async def create_notes(reqbody: CreateNotes):
     note = reqbody.note
     created = await create(note)
     return {"data": created}
+
+
+@app.get("/notes/", tags=["Notes"])
+async def get_all_notes():
+    notes = get_all()
+    return {"data": notes}
 
 
 class GetSimilarNotes(BaseModel):

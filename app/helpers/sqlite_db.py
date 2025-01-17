@@ -56,3 +56,10 @@ def get_note_by_id(note_id: str) -> dict:
         if result:
             return {"id": result[0], "content": result[1], "created_at": result[2]}
         return None
+
+
+def get_all_notes():
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, content FROM notes")
+        return cursor.fetchall()
