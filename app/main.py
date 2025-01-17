@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from app.helpers.gemini_chat import gemini_chat
 from app.helpers.gemini_embedding import gemini_embedding
 from app.helpers.split_text_recursive import split_text_recursive
+from app.notes.create import create
+from app.notes.semantic_search import semantic_search
 from app.temp_kb import temp_kb
 
 app = FastAPI()
@@ -41,3 +43,24 @@ async def get_embedding(reqbody: ChatMessage):
 async def test_split_text(reqbody: ChatMessage):
     result = split_text_recursive(reqbody.user_message)
     return {"data": result}
+
+
+class CreateNotes(BaseModel):
+    note: str
+
+
+@app.post("/notes", tags=["Notes"])
+async def create_notes(reqbody: CreateNotes):
+    note = reqbody.note
+    created = await create(note)
+    return {"data": created}
+
+
+class GetSimilarNotes(BaseModel):
+    text: str
+
+
+@app.get("/notes/get-similar", tags=["Notes"])
+async def get_similar_notes(text: str):
+    notes = await semantic_search(text)
+    return {"data": notes}

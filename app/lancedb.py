@@ -12,7 +12,7 @@ class TextEmbeddingSchema(LanceModel):
 
 class VectorSearchResult(BaseModel):
     text: str
-    doc_id: str
+    id: str
 
 
 DB_PATH = "lance_storage/default-db"

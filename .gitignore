@@ -32,3 +32,6 @@ ENV/
 
 # Environment variables
 .env
+
+# LanceDB
+lance_storage/
