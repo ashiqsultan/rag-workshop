@@ -14,6 +14,7 @@ from app.helpers.sqlite_db import init_db, get_all_notes as get_all
 
 load_dotenv(find_dotenv())
 
+from app.helpers.sqlite_db import init_db
 
 app = FastAPI()
 
