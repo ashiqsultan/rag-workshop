@@ -8,11 +8,12 @@ class TextEmbeddingSchema(LanceModel):
     id: str  # Unique identifier for the record
     text: str  # Chunk of text from the document
     vector: Vector(768)  # 768 is the dimension for gemini text-embedding-004
+    note_id: str  # Reference to the original note
 
 
 class VectorSearchResult(BaseModel):
     text: str
-    id: str
+    note_id: str
 
 
 DB_PATH = "lance_storage/default-db"
@@ -61,7 +62,7 @@ async def vector_search(
         table = await get_or_create_table(table_name)
         results = (
             await table.vector_search(query_vector)
-            .select(["text", "id"])
+            .select(["text", "note_id"])
             .limit(limit)
             .to_pandas()
         )
