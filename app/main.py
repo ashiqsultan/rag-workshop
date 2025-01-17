@@ -1,5 +1,4 @@
 from dotenv import load_dotenv, find_dotenv
-import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from app.helpers.gemini_chat import gemini_chat
@@ -11,10 +10,8 @@ from app.temp_kb import temp_kb
 from app.notes.rag_answer import rag_answer
 from app.helpers.sqlite_db import init_db, get_all_notes as get_all
 
-
 load_dotenv(find_dotenv())
 
-from app.helpers.sqlite_db import init_db
 
 app = FastAPI()
 
