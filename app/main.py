@@ -78,16 +78,16 @@ async def get_all_notes():
     return notes
 
 
-@app.get("/notes/{note_id}", tags=["Notes"])
-async def get_note_by_id(note_id: str):
-    note = get_by_id(note_id)
-    return note
-
-
 @app.get("/notes/get-similar", tags=["Notes"])
 async def get_similar_notes(text: str):
     notes = await semantic_search(text)
     return {"data": notes}
+
+
+@app.get("/notes/{note_id}", tags=["Notes"])
+async def get_note_by_id(note_id: str):
+    note = get_by_id(note_id)
+    return note
 
 
 @app.get("/rag-chat", tags=["RAG-Chat"])
