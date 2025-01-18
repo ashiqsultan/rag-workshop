@@ -50,5 +50,5 @@ async def create(title: str, content: str) -> Note:
     return Note(
         id=note_id,
         title=title,
-        content=note
+        content=content,
     )
