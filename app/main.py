@@ -63,9 +63,10 @@ async def test_split_text(reqbody: ChatMessage):
 
 @app.post("/notes", tags=["Notes"])
 async def create_notes(reqbody: NotesCreate):
-    note = reqbody.note
-    created = await create(note)
-    return {"data": created}
+    title = reqbody.title
+    content = reqbody.content
+    created = await create(title, content)
+    return created
 
 
 @app.get("/notes", tags=["Notes"])

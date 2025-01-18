@@ -16,6 +16,7 @@ def init_db():
             """
             CREATE TABLE IF NOT EXISTS notes (
                 id TEXT PRIMARY KEY,
+                title TEXT NOT NULL,
                 content TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
@@ -35,12 +36,13 @@ def get_db():
         conn.close()
 
 
-def save_note(note_id: str, content: str) -> bool:
+def save_note(note_id: str, title: str, content: str) -> bool:
     """Save a note to the database"""
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO notes (id, content) VALUES (?, ?)", (note_id, content)
+            "INSERT INTO notes (id, title, content) VALUES (?, ?, ?)", 
+            (note_id, title, content)
         )
         conn.commit()
     return True
@@ -51,17 +53,22 @@ def get_by_id(note_id: str) -> Note:
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT id, content, created_at FROM notes WHERE id = ?", (note_id,)
+            "SELECT id, title, content, created_at FROM notes WHERE id = ?", (note_id,)
         )
         result = cursor.fetchone()
         if result:
-            return Note(id=result[0], content=result[1], created_at=result[2])
+            return Note(id=result[0], title=result[1], content=result[2], created_at=result[3])
         return None
 
 
 def get_all() -> Notes:
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT id, content FROM notes")
+        cursor.execute("SELECT id, title, content, created_at FROM notes")
         notes = cursor.fetchall()
-        return Notes(notes=[Note(id=note[0], content=note[1]) for note in notes])
+        return Notes(notes=[Note(
+            id=note[0], 
+            title=note[1], 
+            content=note[2],
+            created_at=note[3]
+        ) for note in notes])
