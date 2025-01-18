@@ -46,7 +46,7 @@ def save_note(note_id: str, content: str) -> bool:
     return True
 
 
-def get_note_by_id(note_id: str) -> Note:
+def get_by_id(note_id: str) -> Note:
     """Retrieve a note by its ID"""
     with get_db() as conn:
         cursor = conn.cursor()
@@ -59,7 +59,7 @@ def get_note_by_id(note_id: str) -> Note:
         return None
 
 
-def get_all_notes() -> Notes:
+def get_all() -> Notes:
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT id, content FROM notes")
