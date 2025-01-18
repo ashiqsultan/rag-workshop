@@ -4,17 +4,18 @@ from app.lancedb import TextEmbeddingSchema
 from app.lancedb import add_record
 from app.helpers.sqlite_db import save_note
 from uuid import uuid4
+from app.notes.schema import Note
 
 
-async def create(note: str) -> dict:
+async def create(title: str, content: str) -> Note:
     # Generate a unique ID for the note
     note_id = str(uuid4())
     
     # Save the full note to SQLite
-    save_note(note_id, note)
+    save_note(note_id, title, content)
 
     # Split the text into chunks for vector storage
-    chunks = split_text_recursive(note)
+    chunks = split_text_recursive(content)
 
     # Create an empty list for records
     lance_db_records: list[TextEmbeddingSchema] = []
@@ -46,7 +47,8 @@ async def create(note: str) -> dict:
     )
     print("Embedding Processed")
     
-    return {
-        "id": note_id,
-        "content": note
-    }
+    return Note(
+        id=note_id,
+        title=title,
+        content=note
+    )
