@@ -1,5 +1,6 @@
 from dotenv import load_dotenv, find_dotenv
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from app.helpers.gemini_chat import gemini_chat
 from app.helpers.gemini_embedding import gemini_embedding
@@ -14,6 +15,15 @@ load_dotenv(find_dotenv())
 
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Initialize the SQLite database
 init_db()
@@ -64,11 +74,10 @@ async def create_notes(reqbody: CreateNotes):
     return {"data": created}
 
 
-@app.get("/notes/", tags=["Notes"])
+@app.get("/notes", tags=["Notes"])
 async def get_all_notes():
     notes = get_all()
-    return {"data": notes}
-
+    return notes
 
 class GetSimilarNotes(BaseModel):
     text: str
