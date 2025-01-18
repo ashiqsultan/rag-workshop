@@ -1,6 +1,7 @@
 import sqlite3
 from contextlib import contextmanager
-import os
+from app.notes.schema import Note, Notes
+
 
 DB_PATH = "notes.db"
 
@@ -45,7 +46,7 @@ def save_note(note_id: str, content: str) -> bool:
     return True
 
 
-def get_note_by_id(note_id: str) -> dict:
+def get_note_by_id(note_id: str) -> Note:
     """Retrieve a note by its ID"""
     with get_db() as conn:
         cursor = conn.cursor()
@@ -54,12 +55,13 @@ def get_note_by_id(note_id: str) -> dict:
         )
         result = cursor.fetchone()
         if result:
-            return {"id": result[0], "content": result[1], "created_at": result[2]}
+            return Note(id=result[0], content=result[1], created_at=result[2])
         return None
 
 
-def get_all_notes():
+def get_all_notes() -> Notes:
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT id, content FROM notes")
-        return cursor.fetchall()
+        notes = cursor.fetchall()
+        return Notes(notes=[Note(id=note[0], content=note[1]) for note in notes])
