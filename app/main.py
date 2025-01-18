@@ -9,7 +9,7 @@ from app.notes.create import create
 from app.notes.semantic_search import semantic_search
 from app.temp_kb import temp_kb
 from app.notes.rag_answer import rag_answer
-from app.helpers.sqlite_db import init_db, get_all_notes as get_all
+from app.helpers.sqlite_db import init_db, get_all, get_by_id
 
 app = FastAPI()
 
@@ -75,6 +75,12 @@ async def create_notes(reqbody: CreateNotes):
 async def get_all_notes():
     notes = get_all()
     return notes
+
+@app.get("/notes/{note_id}", tags=["Notes"])
+async def get_note_by_id(note_id: str):
+    note = get_by_id(note_id)
+    return note
+
 
 class GetSimilarNotes(BaseModel):
     text: str
