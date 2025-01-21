@@ -32,3 +32,6 @@ ENV/
 
 # Environment variables
 .env
+
+lance_storage
+notes.db
