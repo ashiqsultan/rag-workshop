@@ -33,10 +33,5 @@ ENV/
 # Environment variables
 .env
 
-<<<<<<< HEAD
-# LanceDB
-lance_storage/
-=======
 lance_storage
 notes.db
->>>>>>> main
