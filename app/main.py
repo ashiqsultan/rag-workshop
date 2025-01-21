@@ -1,3 +1,4 @@
+from dotenv import load_dotenv, find_dotenv
 import os
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -5,6 +6,10 @@ from app.helpers.gemini_chat import gemini_chat
 from app.helpers.gemini_embedding import gemini_embedding
 from app.helpers.split_text_recursive import split_text_recursive
 from app.temp_kb import temp_kb
+
+
+load_dotenv(find_dotenv())
+
 
 app = FastAPI()
 
