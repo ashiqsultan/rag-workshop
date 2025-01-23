@@ -3,7 +3,7 @@ import os
 import asyncio
 
 
-async def gemini_embedding(text: str) -> list[float] | None:
+async def gemini_embedding(text: str):
     try:
         model = "models/text-embedding-004"
         API_KEY = os.getenv("GEMINI_API_KEY")
