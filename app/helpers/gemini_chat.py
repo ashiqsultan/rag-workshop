@@ -3,6 +3,7 @@ import google.generativeai as genai
 import json
 from google.generativeai.types import generation_types
 
+ERROR_MESSAGE = "Sorry, I'm having trouble processing your request. Please try again later."
 
 async def gemini_chat(user_message: str, knowledge_base: str):
     try:
@@ -38,10 +39,6 @@ async def gemini_chat(user_message: str, knowledge_base: str):
             model_name="gemini-1.5-flash-8b",
             generation_config=generation_config,
             system_instruction=system_instruction,
-        )
-
-        ERROR_MESSAGE = (
-            "Sorry, I'm having trouble processing your request. Please try again later."
         )
 
         chat_session = model.start_chat(history=[])
