@@ -35,3 +35,8 @@ ENV/
 
 lance_storage
 notes.db
+# LanceDB
+lance_storage/
+
+# SQLite
+*.db
